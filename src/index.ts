@@ -24,7 +24,7 @@ async function main() {
     setLights([
       {
         x: playerPos.x,
-        y: playerPos.y,
+        y: playerPos.y - 2,
         radius: 15,
         intensity: 1.0,
       },

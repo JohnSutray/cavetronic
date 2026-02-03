@@ -35,9 +35,9 @@ export function drawConvexPolygonLit(
     const brightness = getEdgeBrightness(world, getLights(), wx1, wy1, wx2, wy2);
     const color = brightnessToColor(brightness);
 
-    g.setStrokeStyle({ width: 0.05, color });
-    g.moveTo(lx1, ly1);
-    g.lineTo(lx2, ly2);
+    g.setStrokeStyle({ width: 0.05, color: 0x00ff00 });
+    g.moveTo(wx1, wy1);
+    g.lineTo(wx2, wy2);
     g.stroke();
   }
 }

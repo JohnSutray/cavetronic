@@ -24,14 +24,6 @@ pids
 # Dependency directories
 node_modules/
 
-# Build artifacts
-public/**
-# Except empty mm directory
-# (directory have to exist for storybook:build)
-!public/mm/
-public/mm/**
-!public/msw/
-!public/msw/**
 .cache
 .env
 

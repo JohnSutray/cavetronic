@@ -1,6 +1,7 @@
 // src/render/drawCuboidLit.ts
 import { World } from "@dimforge/rapier2d";
 import { Graphics } from "pixi.js";
+import { strokeWidth } from './constants';
 import { getEdgeBrightness } from "./lighting";
 import { getLights } from "./getLights";
 import { brightnessToColor } from "./brightnessToColor";
@@ -36,7 +37,7 @@ export function drawCuboidLit(
     const brightness = getEdgeBrightness(world, getLights(), x1, y1, x2, y2);
     const color = brightnessToColor(brightness);
 
-    g.setStrokeStyle({ width: 0.05, color: 0x00ff00 });
+    g.setStrokeStyle({ width: strokeWidth, color: 0x00ff00 });
     g.moveTo(x1, y1);
     g.lineTo(x2, y2);
     g.stroke();

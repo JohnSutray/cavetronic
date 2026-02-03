@@ -1,6 +1,7 @@
 // src/render/renderWorld.ts
 import { Matrix } from "pixi.js";
 import { Collider, World } from "@dimforge/rapier2d";
+import { strokeWidth } from './constants';
 import { getGraphics } from "./getGraphics";
 import { drawCollider } from "./drawCollider";
 import { drawLitEdges } from "./drawLitEdges";
@@ -14,7 +15,7 @@ export function renderWorld(world: World): void {
   g.clear();
 
   // Проход 1: все рёбра тусклым
-  g.setStrokeStyle({ width: 0.05, color: DIM_COLOR });
+  g.setStrokeStyle({ width: strokeWidth, color: DIM_COLOR });
 
   world.forEachCollider((collider: Collider) => {
     drawCollider(g, collider);

@@ -1,13 +1,14 @@
 // src/render/drawLitEdges.ts
 import { World, Collider, ShapeType } from "@dimforge/rapier2d";
 import { Graphics } from "pixi.js";
+import { strokeWidth } from './constants';
 import { getLights } from "./getLights";
 import { getPointBrightness } from "./lighting";
 import { drawRaycastDebug } from "./drawLightDebug";
 
 const BRIGHT_COLOR = 0x00ff00;
 const BRIGHTNESS_THRESHOLD = 0.1;
-const DEBUG_ENABLED = true;
+const DEBUG_ENABLED = false;
 
 export function drawLitEdges(world: World, g: Graphics): void {
   const lights = getLights();
@@ -49,7 +50,7 @@ export function drawLitEdges(world: World, g: Graphics): void {
       if (brightness > BRIGHTNESS_THRESHOLD) {
         const alpha = Math.min(1, brightness);
 
-        g.setStrokeStyle({ width: 0.05, color: BRIGHT_COLOR, alpha });
+        g.setStrokeStyle({ width: strokeWidth, color: BRIGHT_COLOR, alpha });
         g.moveTo(edge.x1, edge.y1);
         g.lineTo(edge.x2, edge.y2);
         g.stroke();

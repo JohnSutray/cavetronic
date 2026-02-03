@@ -24,7 +24,7 @@ export function applyPlayerInput(world: World, playerHandle: number) {
   }
 
   const velocity = playerBody.linvel();
-  const torque = 0.05;
+  const torque = 0.22;
   const horizontalForce = 0.4;
 
   if (keys["KeyA"] || keys["KeyW"]) {

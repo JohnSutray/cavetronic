@@ -1,6 +1,7 @@
 // src/render/drawLightDebug.ts
 import { World, Ray } from "@dimforge/rapier2d";
 import { Graphics } from "pixi.js";
+import { strokeWidth } from './constants';
 import { getLights } from "./getLights";
 
 const COLOR_VISIBLE = 0x0000ff;
@@ -74,13 +75,13 @@ export function drawRaycastDebug(
   g.stroke();
 
   // Точка попадания
-  g.setStrokeStyle({ width: 0.05, color });
+  g.setStrokeStyle({ width: strokeWidth, color });
   g.circle(hitPoint.x, hitPoint.y, 0.1);
   g.stroke();
 
   // Целевая точка (если отличается)
   if (!isVisible) {
-    g.setStrokeStyle({ width: 0.05, color: COLOR_BLOCKED, alpha: 0.3 });
+    g.setStrokeStyle({ width: strokeWidth, color: COLOR_BLOCKED, alpha: 0.3 });
     g.circle(targetX, targetY, 0.1);
     g.stroke();
   }

@@ -19,6 +19,7 @@ export function updateCamera(
   const pos = playerBody.translation();
   const scale = worldContainer.scale.x;
 
+  worldContainer.scale.set(30, 30);
   worldContainer.position.set(
     window.innerWidth / 2 - pos.x * scale,
     window.innerHeight / 2 - pos.y * scale

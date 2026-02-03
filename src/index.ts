@@ -13,30 +13,41 @@ async function main() {
   const { world, playerHandle } = createPhysicsWorldWithCaveAndPlayer();
   const worldContainer = getWorldContainer();
 
-  function loop() {
-    applyPlayerInput(world, playerHandle);
-    world.step();
+  world.timestep = 0.008;
 
-    // Свет привязан к игроку
-    const playerBody = world.getRigidBody(playerHandle);
-    const playerPos = playerBody.translation();
+  let lastTime = 0;
+  let deltaTime = 0;
 
-    setLights([
-      {
-        x: playerPos.x,
-        y: playerPos.y - 2,
-        radius: 15,
-        intensity: 1.0,
-      },
-    ]);
+  function loop(currentTime: number) {
+    deltaTime += currentTime - lastTime;
+    lastTime = currentTime;
 
-    updateCamera(worldContainer, world, playerHandle);
-    renderWorld(world);
+    if (deltaTime > 8) {
+      deltaTime = 0;
+      applyPlayerInput(world, playerHandle);
+      world.step();
+
+      const playerBody = world.getRigidBody(playerHandle);
+      const playerPos = playerBody.translation();
+
+      setLights([
+        {
+          x: playerPos.x,
+          y: playerPos.y - 2,
+          radius: 15,
+          intensity: 1.0,
+        },
+      ]);
+
+      updateCamera(worldContainer, world, playerHandle);
+      renderWorld(world);
+    }
+
 
     requestAnimationFrame(loop);
   }
 
-  loop();
+  loop(0);
 }
 
 main().catch(console.error);

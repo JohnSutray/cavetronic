@@ -1,0 +1,46 @@
+# Macos attributes file
+.DS_Store
+
+# IDE
+.vscode
+.idea
+.history
+
+# Logs
+logs
+*.log
+yarn-debug.log*
+yarn-error.log*
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+node_modules/
+
+# Build artifacts
+public/**
+# Except empty mm directory
+# (directory have to exist for storybook:build)
+!public/mm/
+public/mm/**
+!public/msw/
+!public/msw/**
+.cache
+.env
+
+# Git hooks pre-commit, pre-push
+.husky/
+
+**/allure-report/chrome
+**/allure-report/firefox
+!/allure-report/index.html
+**/allure-results
+**/junit-report.xml
+test-results/

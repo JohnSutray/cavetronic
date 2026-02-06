@@ -7,7 +7,7 @@ import { drawCollider } from "./drawCollider";
 import { drawLitEdges } from "./drawLitEdges";
 import { drawLightDebug } from "./drawLightDebug";
 
-const DIM_COLOR = 0x0a3a0a;
+const DIM_COLOR = 0x1D241A;
 
 export function renderWorld(world: World): void {
   const g = getGraphics();
@@ -15,7 +15,7 @@ export function renderWorld(world: World): void {
   g.clear();
 
   // Проход 1: все рёбра тусклым
-  g.setStrokeStyle({ width: strokeWidth, color: DIM_COLOR });
+  g.setStrokeStyle({ width: strokeWidth, color: DIM_COLOR, alpha: 0.3 });
 
   world.forEachCollider((collider: Collider) => {
     drawCollider(g, collider);

@@ -11,7 +11,8 @@ document.addEventListener("keyup", (e) => {
   keys[e.code] = false;
 });
 
-const MAX_SPEED = 5.0;
+const MAX_SPEED = 4.0;
+const MAX_ANGVEL = 6.0;
 
 /**
  * Применяет вращение и горизонтальную силу с ограничением скорости
@@ -24,11 +25,14 @@ export function applyPlayerInput(world: World, playerHandle: number) {
   }
 
   const velocity = playerBody.linvel();
-  const torque = 0.22;
-  const horizontalForce = 0.4;
+  const angvel = playerBody.angvel();
+  const torque = 0.10;
+  const horizontalForce = 0.2;
 
   if (keys["KeyA"] || keys["KeyW"]) {
-    playerBody.applyTorqueImpulse(-torque, true);
+    if (angvel > -MAX_ANGVEL) {
+      playerBody.applyTorqueImpulse(-torque, true);
+    }
 
     if (velocity.x > -MAX_SPEED) {
       playerBody.applyImpulse({ x: -horizontalForce, y: 0 }, true);
@@ -36,7 +40,9 @@ export function applyPlayerInput(world: World, playerHandle: number) {
   }
 
   if (keys["KeyD"]) {
-    playerBody.applyTorqueImpulse(torque, true);
+    if (angvel < MAX_ANGVEL) {
+      playerBody.applyTorqueImpulse(torque, true);
+    }
 
     if (velocity.x < MAX_SPEED) {
       playerBody.applyImpulse({ x: horizontalForce, y: 0 }, true);

@@ -7,7 +7,7 @@ import { getPointBrightness } from "./lighting";
 import { drawRaycastDebug } from "./drawLightDebug";
 
 const BRIGHT_COLOR = 0x00ff00;
-const BRIGHTNESS_THRESHOLD = 0.1;
+const BRIGHTNESS_THRESHOLD = 0.01;
 const DEBUG_ENABLED = false;
 
 export function drawLitEdges(world: World, g: Graphics): void {

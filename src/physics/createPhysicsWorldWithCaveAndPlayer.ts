@@ -1,4 +1,3 @@
-// src/physics/world.ts
 import { ColliderDesc, RigidBodyDesc, ShapeType, World } from "@dimforge/rapier2d";
 import { createCaveTerrain } from "./createCaveTerrain";
 import { createAttachedObject } from "./createAttachedObject";

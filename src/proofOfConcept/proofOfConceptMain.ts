@@ -6,7 +6,7 @@ import { initPixiRenderer } from './render/initPixiRenderer';
 import { renderWorld } from './render/renderWorld';
 import { updateCamera } from './render/updateCamera';
 
-export async function main() {
+export async function proofOfConceptMain() {
   await initPixiRenderer();
 
   const { world, playerHandle } = createPhysicsWorldWithCaveAndPlayer();

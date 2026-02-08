@@ -1,14 +1,13 @@
-import { IWithPhysicsWorld } from "../models";
+import { IWithPhysicsWorld, IWithPixiApp } from "../models";
 import { s_sub_colliderRemoveSystem } from "../commonSystems/s_sub_colliderRemoveSystem";
 import { s_sub_bodyRemoveSystem } from "../commonSystems/s_sub_bodyRemoveSystem";
 import { s_sub_colliderAddSystem } from "../commonSystems/s_sub_colliderAddSystem";
 import { s_sub_bodyAddSystem } from "../commonSystems/s_sub_bodyAddSystem";
 import { createEcsWorld } from "./createEcsWorld";
 
-export function createLecs({ physicsWorld }: IWithPhysicsWorld) {
+export function createVecs(deps: IWithPhysicsWorld & IWithPixiApp) {
   return createEcsWorld({
-    physicsWorld,
-    pixiApp: undefined!,
+    ...deps,
     tickSystems: [],
     subscriptionSystems: [
       s_sub_bodyAddSystem,

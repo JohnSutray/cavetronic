@@ -1,39 +1,32 @@
-import { Application } from "pixi.js";
-import { World } from "@dimforge/rapier2d";
-import { createLecs } from "./worlds/LECS";
-import { createVecs } from "./worlds/VECS";
-import { rafLoop } from "./utils/rafLoop";
+import { Application } from 'pixi.js';
+import { WorkerTransportClient } from './transport/WorkerTransportClient';
+import { createPhysicsWorld } from './utils/createPhysicsWorld';
+import { rafLoop } from './utils/rafLoop';
+import { createVecs } from './worlds/VECS';
 
 async function startInBrowser() {
-  const app = new Application();
+  const pixiApp = new Application();
 
-  await app.init({
-    resizeTo: window,
-  });
+  await pixiApp.init({ resizeTo: window, background: 0x000000 });
 
-  document.body.appendChild(app.canvas);
+  document.body.appendChild(pixiApp.canvas);
 
-  const lecs = createLecs({
-    physicsWorld: new World({
-      y: 9.8,
-      x: 0,
-    }),
-  });
+  const worker = new Worker(new URL('./workers/lecs.worker.ts', import.meta.url));
+  const transport = new WorkerTransportClient(worker);
+
+  const physicsWorld = createPhysicsWorld();
 
   const vecs = createVecs({
-    pixiApp: app,
-    physicsWorld: new World({
-      y: 9.8,
-      x: 0,
-    }),
+    pixiApp,
+    physicsWorld,
+    transport,
   });
 
   rafLoop(8, (deltaTimeMs) => {
-    lecs.tick(deltaTimeMs);
     vecs.tick(deltaTimeMs);
 
     return true;
-  })
+  })(0);
 }
 
 startInBrowser().catch(console.error);

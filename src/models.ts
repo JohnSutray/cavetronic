@@ -1,32 +1,43 @@
-import { World as PhysicsWorld } from "@dimforge/rapier2d";
-import { Application } from "pixi.js";
+import type { ServiceContainer } from './services/getService';
 
-export interface IPhysicsWorld extends PhysicsWorld {
-}
-
-export interface IWithPhysicsWorld {
-  readonly physicsWorld: IPhysicsWorld;
-}
-
-export interface IWithGetIndex {
-  getIndex(eid: number): number;
-}
-
-export interface IWithDeltaTime {
-  deltaTimeMs: number;
-}
-
-export interface IWithPixiApp {
-  readonly pixiApp: Application;
-}
-
-export interface IEcsWorld extends IWithPhysicsWorld, IWithGetIndex, IWithDeltaTime, IWithPixiApp {
-}
-
-export interface ISubscriptionSystem {
-  (world: IEcsWorld): () => void;
+export interface IEcsWorld {
+  services: ServiceContainer;
 }
 
 export interface ITickSystem {
   (world: IEcsWorld): void;
+}
+
+export interface IMessageHandler {
+  (messageId: number, data: ArrayBuffer): void;
+}
+
+export interface ITransport {
+  send(messageId: number, data: ArrayBuffer): void;
+
+  onMessage(handler: IMessageHandler): () => void;
+
+  destroy(): void;
+}
+
+export interface IHostMessageHandler {
+  (userId: string, messageId: number, data: ArrayBuffer): void;
+}
+
+export interface IHostConnectionHandler {
+  (userId: string): void;
+}
+
+export interface IHostTransport {
+  send(userId: string, messageId: number, data: ArrayBuffer): void;
+
+  broadcast(messageId: number, data: ArrayBuffer): void;
+
+  onMessage(handler: IHostMessageHandler): () => void;
+
+  onConnect(handler: IHostConnectionHandler): () => void;
+
+  onDisconnect(handler: IHostConnectionHandler): () => void;
+
+  destroy(): void;
 }

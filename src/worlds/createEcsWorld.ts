@@ -1,48 +1,44 @@
-import { IEcsWorld, ISubscriptionSystem, ITickSystem, IWithPhysicsWorld, IWithPixiApp } from "../models";
 import { createEntityIndex, createWorld, deleteWorld, getId, withVersioning } from "bitecs";
+import type { IEcsWorld, ITickSystem } from "../models";
+import { GetDeltaTimeMsToken } from '../services/getDeltaTimeMsToken';
+import { GetIndexToken } from '../services/getIndexToken';
+import type { ServiceContainer } from "../services/getService";
 
-export const createEcsWorld = ({
-  physicsWorld,
-  subscriptionSystems,
+/** Creates an ECS world with a service container and registers internal services */
+export function createEcsWorld({
+  services,
   tickSystems,
-  pixiApp
-}: IWithPhysicsWorld & IWithPixiApp & {
-  subscriptionSystems: ISubscriptionSystem[];
+}: {
+  services: ServiceContainer;
   tickSystems: ITickSystem[];
-}) => {
+}) {
   const versioning = withVersioning(12);
   const entityIndex = createEntityIndex(versioning);
-  const ecsWorld = createWorld<IEcsWorld>(entityIndex, {
-    physicsWorld,
-    pixiApp,
-    getIndex(eid: number): number {
-      return getId(entityIndex, eid);
-    },
-    deltaTimeMs: 1,
-  });
 
-  const subscriptions = subscriptionSystems.map(s => s(ecsWorld));
+  services.set(GetIndexToken, (eid: number) => getId(entityIndex, eid));
+
+  let deltaTimeMs = 1;
+  services.set(GetDeltaTimeMsToken, () => deltaTimeMs);
+
+  const ecsWorld = createWorld<IEcsWorld>(entityIndex, { services });
 
   return {
-    tick(deltaTimeMs: number) {
-      ecsWorld.deltaTimeMs = deltaTimeMs;
+    world: ecsWorld,
 
-      for (let i = 0; i < tickSystems.length; i++){
-        const tickSystem = tickSystems[i];
+    tick(dt: number) {
+      deltaTimeMs = dt;
 
+      for (let i = 0; i < tickSystems.length; i++) {
         try {
-          tickSystem(ecsWorld);
+          tickSystems[i](ecsWorld);
         } catch (e) {
           console.error(e);
         }
       }
     },
-    destroy() {
-      for (const subscription of subscriptions) {
-        subscription();
-      }
 
+    destroy() {
       deleteWorld(ecsWorld);
     },
   };
-};
+}

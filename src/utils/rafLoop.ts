@@ -6,7 +6,7 @@ export function rafLoop(deltaMs: number, callback: (deltaTimeMs: number) => bool
     deltaTime += currentTime - lastTime;
     lastTime = currentTime;
 
-    if (deltaTime > 8) {
+    if (deltaTime > deltaMs) {
       if (!callback(deltaTime)) {
         return;
       }

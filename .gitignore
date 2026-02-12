@@ -1,6 +1,6 @@
 # Macos attributes file
 .DS_Store
-
+dist
 # IDE
 .vscode
 .idea
